@@ -1,0 +1,24 @@
+
+*.class
+*~
+\#*\#
+.\#*
+
+# special files
+*.aux
+*.log
+.idea/
+.DS_Store
+__pycache__/
+*.iml
+
+_results/
+nohup.out
+tools/travistorrent-tools/
+/_results-old
+/data-old
+/data
+/_downloads
+/evaldata
+/_results
+python/pts/mutator/

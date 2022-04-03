@@ -1,0 +1,37 @@
+max_epochs: 50
+batch_size: 8
+learning_rate: 0.0005
+weight_decay: 1e-4
+print_freq: 100
+save_freq: 10000
+embedding_size: 64
+hidden_size: 128
+layers: 2
+dropout: 0.5
+vocab_cut_off_pct: 5
+length_cut_off_pct: 70
+classes: 2
+min_samples: 1
+cuda: True
+mean_seq: True
+rnn: LSTM
+clip: 0.25
+patience: 10
+max_seq_len: 250
+input: normal
+num_heads: 16
+cross_feature_size: 32
+last_layer_dim: 32
+device_name: gpu
+margin: 0.4
+
+diff_features:
+  - changed_class_name
+  - changed_method_name
+  - abstract_code_diff
+test_features:
+  - test_class
+
+# directories
+embed_dir: embeddings/d_word_index.pkl
+saved_model_dir: saved_models/best_model
