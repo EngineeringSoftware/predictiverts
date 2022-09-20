@@ -11,7 +11,7 @@ All our data is hosted on UTBox via [a shared folder](https://utexas.box.com/s/p
 If you have used our data and code in a research project, please cite
 the research paper in any related publication:
 ```bibtex
-@inproceedings{ZhangETAL22Comparing,
+@inproceedings{ZhangETAL22MLRTS,
   author={Zhang, Jiyang and Liu, Yu and Gligoric, Milos and Legunsen, Owolabi and Shi, August},
   booktitle={2022 IEEE/ACM International Conference on Automation of Software Test (AST)}, 
   title={Comparing and Combining Analysis-Based and Learning-Based Regression Test Selection}, 
