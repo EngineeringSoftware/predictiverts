@@ -13,11 +13,9 @@ the research paper in any related publication:
 ```bibtex
 @inproceedings{ZhangETAL22Comparing,
   author={Zhang, Jiyang and Liu, Yu and Gligoric, Milos and Legunsen, Owolabi and Shi, August},
-  booktitle={2022 IEEE/ACM International Conference on Automation of Software Test (AST)}, 
+  booktitle={International Conference on Automation of Software Test},
   title={Comparing and Combining Analysis-Based and Learning-Based Regression Test Selection}, 
   year={2022},
-  volume={},
-  number={},
   pages={17-28},
-  doi={}}
+}
 ```
