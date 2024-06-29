@@ -4,7 +4,7 @@ from datetime import datetime
 from pathlib import Path
 import re
 from tqdm import tqdm
-import traceback
+from recordclass import asdict
 from urllib.error import HTTPError
 from urllib.request import urlopen
 from os import listdir
@@ -56,7 +56,7 @@ class ProjectParser:
         project_data.sha = git_hash
 
         project_data_file = results_dir / "project.json"
-        IOUtils.dump(project_data_file, IOUtils.jsonfy(project_data), IOUtils.Format.jsonPretty)
+        IOUtils.dump(project_data_file, asdict(project_data), IOUtils.Format.jsonPretty)
 
         # Prepare config
         log_file = results_dir / "collector-log.txt"

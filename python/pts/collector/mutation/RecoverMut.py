@@ -11,8 +11,6 @@ import sys
 
 from pts.Environment import Environment
 
-import ipdb
-
 # Mutations = {'PrimitiveReturnsMutator',  # replaced float return with 0.0f for  (Primitive) 0
 #              'BooleanTrueReturnValsMutator',  # return true
 #              'NullReturnValsMutator',  # return null
