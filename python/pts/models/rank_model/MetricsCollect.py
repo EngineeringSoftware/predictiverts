@@ -349,6 +349,7 @@ class MetricsCollect:
         from pts.models.rank_model.TestSelectionModel import calculate_apfd
         proj_result_dir = Macros.model_data_dir / "rank-model" / project.split('_')[1]
         pm_result_dir = Macros.results_dir / "modelResults" / project.split('_')[1] / data_type
+        IOUtils.mk_dir(pm_result_dir, is_make_parent=True)
         if os.path.exists(proj_result_dir / data_type / "results"):
             with IOUtils.cd(proj_result_dir / data_type / "results"):
                 BashUtils.run(f"cp *.json {pm_result_dir}", expected_return_code=0)

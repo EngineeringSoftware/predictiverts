@@ -1,6 +1,6 @@
 dpu-utils==0.2.22
 filelock==3.0.12
-gensim==4.0.1
+gensim==3.8.2
 gitdb==4.0.5
 GitPython==3.1.12
 javalang==0.13.0

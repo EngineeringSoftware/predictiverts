@@ -8,7 +8,6 @@ from seutil import BashUtils, IOUtils, LoggingUtils, TimeUtils
 from pathlib import Path
 import json
 from pts.Macros import Macros
-from pts.collector.FileParser import FileParser
 import re
 import git
 from unidiff import PatchSet
@@ -19,7 +18,6 @@ import time
 import random
 from pts.main import proj_logs
 
-import ipdb
 
 # projects = {'apache_commons-dbcp': '7b9fba0be5f9ae7daf55d995b980646838f8975e'}
 NUM_SHA = 50
