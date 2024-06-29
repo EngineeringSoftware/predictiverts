@@ -134,7 +134,7 @@ def collect_rts_mutants(proj: str, target_sha: str):
                     test_class_2_methods[class_name].append(m["name"])
         # end if
     # end for
-    IOUtils.dump(collected_results_dir / "`test2meth.json`", test_class_2_methods)
+    IOUtils.dump(collected_results_dir / "test2meth.json", test_class_2_methods)
     IOUtils.dump(f"{output_file_path}", res, IOUtils.Format.jsonNoSort)
 
 

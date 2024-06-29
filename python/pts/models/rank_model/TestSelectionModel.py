@@ -5,24 +5,19 @@ from pathlib import Path
 from typing import List
 from pts.main import proj_logs
 
-import joblib
+
 import time
-import ipdb
 import numpy as np
 import torch
 from torch import nn
-import torch.optim as optim
 from seutil import IOUtils, LoggingUtils
 from collections import Counter
 from sklearn.metrics import recall_score, precision_score, f1_score
-from pts.processor.data_utils.SubTokenizer import SubTokenizer
-from pts.processor.RankProcess import RankProcessor
 from pts.Macros import Macros
 from pts.models.rank_model.CodeEmbeddingStore import CodeEmbeddingStore
 from pts.models.rank_model.DiffTestModel import DiffTestModel
 from pts.models.rank_model.utils import DiffPairBM25BatchData, DiffTestBM25BatchData, DiffTestBatchData, DiffPairBatchData, read_data_from_file, hinge_loss, \
     compute_score, find_missing_tests
-from pts.collector.eval_data_collection import remove_comment
 
 def threshold_valid_loss(scores):
     """

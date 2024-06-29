@@ -19,6 +19,8 @@ class RankProcessor:
         self.output_dir = output_dir
         self.repos_downloads_dir = Macros.repos_downloads_dir
         self.repos_result_dir = Macros.repos_results_dir
+        if not (Macros.results_dir).exists():
+            IOUtils.mk_dir(Macros.results_dir)
 
     def process_train_tools(self, proj_names: List[str]):
         """
@@ -106,6 +108,7 @@ class RankProcessor:
             pit_log_file = {}
             pit_log_file["project"] = proj
             pit_log_file["test_num"] = test_class_num
+            IOUtils.mk_dir(Macros.results_dir / "metrics")
             IOUtils.dump(Macros.results_dir / "metrics" / f"stats-{proj}-pitlog.json", pit_log_file)
 
 
