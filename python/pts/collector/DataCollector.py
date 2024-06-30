@@ -109,7 +109,7 @@ class DataCollector:
         main(proj_dict)
 
     def download_projects(self, project_list: Dict):
-        for project, sha in project_list.items():
+        for project, sha in tqdm(project_list.items(), total=len(project_list)):
             try:
                 # Project name is user_repo
                 project_url = self.parse_repo_name(project)

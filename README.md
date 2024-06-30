@@ -4,19 +4,30 @@ ML-based Regression test selection(RTS) models based on mutation analysis and an
 
 ## Installation
 
-It is recommended to use [conda](https://docs.conda.io/en/latest/) or [virtual environments](https://realpython.com/python-virtual-environments-a-primer/) to manage dependencies.
+It is recommended to use [conda](https://docs.conda.io/en/latest/) or [virtual environments](https://realpython.com/python-virtual-environments-a-primer/) to manage Python dependencies.
 
 For conda user, run:
+
 ```bash
 conda create -n prts python=3.7
 pip install -r requirements.txt
 ```
 
+To run the experiments, you need Java 8 and Maven.
+
 ## Training Data Collection
 
 We use [PIT](https://pitest.org/) to get mutants for training data. To generate and collect training data from an open-source project:
 
-1. Create download directory `_downloads` and clone the repository `$project` to this directory
+1. Create download directory `_downloads` and clone the repository `$project` to this directory.
+
+The project list and SHAs we used are documented [here](https://github.com/EngineeringSoftware/predictiverts/blob/43c65cc9bb2b7e1379e101457a734b7b2e01ad25/python/pts/main.py#L34).
+To download all the projects:
+
+```bash
+./python/run.sh downloads_repos
+```
+
 2. Modifying the `pom.xml` file of the `$project` by inserting the following plugin to the `pom.xml`.
 
 ```xml
@@ -50,7 +61,7 @@ Then create a directory `_results/$project` and move the report (`mutations.xml`
 
 If the script runs successfully, you will see `mutant-data.json` and `method-data.json` in the `_results/$project/collector` directory.
 
-5. We provide positive and negative labels to each mutant-test pair. For 'Ekstazi-*' models, we label the mutant-test pairs based on if the RTS tool (Ekstazi) will select the test or not.
+5. We provide positive and negative labels to each mutant-test pair. For 'Ekstazi-\*' models, we label the mutant-test pairs based on if the RTS tool (Ekstazi) will select the test or not.
 
 - In order to run Ekstazi, copy the `tools/ekstazi-extesnsion-1.0-SNAPSHOT.jar` to `${MAVEN_HOME}/lib/ext/`. Please refer to [document](tools/xts-extension/README.md) for detailed instructions.
 - Note: We use java 1.8 when running Ekstazi
@@ -152,7 +163,7 @@ The model checkpoints will be saved to `data/model-data/rank-model/$project/Fail
 ```
 
 The eval results will be written to `data/model-data/rank-model/$project/Ekstazi-Basic(Code,ABS)/results`
-Same for 'Fail-*' models.
+Same for 'Fail-\*' models.
 
 ## Research
 
