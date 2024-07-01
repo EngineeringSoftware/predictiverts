@@ -65,15 +65,14 @@ mvn org.pitest:pitest-maven:mutationCoverage
 # You will find the report in $_downloads/apache_commons-validator/target/pit-reports/$date/mutations.xml
 ```
 
-Then create a directory `_results/$project` and move the report (`mutations.xml`) to this dirctory
+Then copy the report (`mutations.xml`) to the result dirctory `_results/$project`.
 
 ```bash
 cd ../../
-mkdir _results/apache_commons-validtor -p
 cp _downloads/apache_commons-validator/target/pit-reports/*/mutations.xml _results/apache_commons-validator/
 ```
 
-5. Parse the pit report and the source code in the project to collect the pit-generated mutants.
+5. Parse the pit report and the project's source code to collect the pit-generated mutants.
 
 ```bash
 ./python/run.sh get_mutants apache_commons-validator
