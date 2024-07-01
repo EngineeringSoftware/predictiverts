@@ -10,6 +10,7 @@ For conda user, run:
 
 ```bash
 conda create -n prts python=3.7
+conda activate prts
 pip install -r requirements.txt
 ```
 
@@ -25,8 +26,11 @@ The project list and SHAs we used are documented [here](https://github.com/Engin
 To download all the projects:
 
 ```bash
+mkdir _downloads/
 ./python/run.sh downloads_repos
 ```
+
+You will see 10 projects used in our paper in `_downloads`
 
 2. Modifying the `pom.xml` file of the `$project` by inserting the following plugin to the `pom.xml`.
 
@@ -44,19 +48,34 @@ To download all the projects:
 </plugin>
 ```
 
+3. Make sure to checkout to the correct SHA of the $project and the tests can be run without errors. We use 'apache_commons-validator' for demonstration.
+
+```bash
+cd _downloads/apache_commons-validator
+mvn compile
+mvn test
+```
+
 3. Run pit and get a report in xml format `mutations.xml`
 
 ```bash
-mvn org.pitest:pitest-maven:mutationCoverage -DoutputFormats=xml
-# You will find the report in $repo_dir/target/pit-reports/$date/mutations.xml
+mvn org.pitest:pitest-maven:mutationCoverage
+# You will find the report in $_downloads/apache_commons-validator/target/pit-reports/$date/mutations.xml
 ```
 
 Then create a directory `_results/$project` and move the report (`mutations.xml`) to this dirctory
 
+```bash
+cd ../../
+mkdir _results/apache_commons-validtor -p
+cp _downloads/apache_commons-validator/target/pit-reports/*/mutations.xml _results/apache_commons-validator/
+```
+
 4. Parse the pit report and the source code in the project to collect the pit-generated mutants.
 
 ```bash
-./python/run.sh get_mutants $project
+./python/run.sh get_mutants apache_commons-validator
+# `mutant-data.json` and `method-data.json` will be written to `_results/apache_commons-validator/collector` directory.
 ```
 
 If the script runs successfully, you will see `mutant-data.json` and `method-data.json` in the `_results/$project/collector` directory.
@@ -64,30 +83,30 @@ If the script runs successfully, you will see `mutant-data.json` and `method-dat
 5. We provide positive and negative labels to each mutant-test pair. For 'Ekstazi-\*' models, we label the mutant-test pairs based on if the RTS tool (Ekstazi) will select the test or not.
 
 - In order to run Ekstazi, copy the `tools/ekstazi-extesnsion-1.0-SNAPSHOT.jar` to `${MAVEN_HOME}/lib/ext/`. Please refer to [document](tools/xts-extension/README.md) for detailed instructions.
-- Note: We use java 1.8 when running Ekstazi
+- Note: We use java 8 when running Ekstazi
 
 ```bash
 # Collect labels from Ekstazi results
-./python/run.sh get_tools_data_for_mutants $project
+./python/run.sh get_tools_data_for_mutants apache_commons-validator
 ```
 
-If the script runs successfully, you will see `mutant-data-rts-tool.json` file in `_results/$project/collector`
+If the script runs successfully, you will see `mutant-data-rts-tool.json` file in `_results/$project/collector`. This file contains the tests selected by Ekstazi.
 
 6. Create training and validation dataset
 
 - Dataset labeled by Ekstazi
 
 ```bash
-./python/model_run.sh process_train_data_rank_model $project
+./python/model_run.sh process_train_data_rank_model apache_commons-validator
 ```
 
 - Dataset labeled by tests pass or fail
 
 ```bash
-./python/model_run.sh process_train_data_rank_model_fail $project
+./python/model_run.sh process_train_data_rank_model_fail apache_commons-validator
 ```
 
-The data files will be written in `data/model-data/rank-model/$project/`.
+The data files will be written to `data/model-data/rank-model/`.
 
 ## Eval Data Preparation
 
@@ -105,7 +124,7 @@ unzip eval-data.zip -d evaldata/
 2. Process test data for a given project
 
 ```bash
-./python/model_run.sh process_test_data_rank_model $project
+./python/model_run.sh process_test_data_rank_model apache_commons-validator
 ```
 
 The processed evaluation dataset will be store at `data/model-data/rank-model/$project/test.json`
@@ -116,11 +135,11 @@ The processed evaluation dataset will be store at `data/model-data/rank-model/$p
 
 ```bash
 # train Ekstazi-Basic Model
-./python/model_run.sh train_rank_ekstazi_basic_model $project
+./python/model_run.sh train_rank_ekstazi_basic_model apache_commons-validator
 # train Ekstazi-Code Model
-./python/model_run.sh train_rank_ekstazi_code_model $project
+./python/model_run.sh train_rank_ekstazi_code_model apache_commons-validator
 # train Ekstazi-ABS model
-./python/model_run.sh train_rank_ekstazi_abs_model $project
+./python/model_run.sh train_rank_ekstazi_abs_model apache_commons-validator
 ```
 
 The model checkpoints will be saved to `data/model-data/rank-model/$project/Ekstazi-Basic(Code/ABS)/saved_models/`
@@ -129,37 +148,41 @@ The model checkpoints will be saved to `data/model-data/rank-model/$project/Ekst
 
 ```bash
 # train Fail-Basic Model
-./python/model_run.sh train_rank_fail_basic_model $project
+./python/model_run.sh train_rank_fail_basic_model apache_commons-validator
 # train Fail-Code Model
-./python/model_run.sh train_rank_fail_code_model $project
+./python/model_run.sh train_rank_fail_code_model apache_commons-validator
 # train Fail-ABS model
-./python/model_run.sh train_rank_fail_abs_model $project
+./python/model_run.sh train_rank_fail_abs_model apache_commons-validator
 ```
 
 The model checkpoints will be saved to `data/model-data/rank-model/$project/Fail-Basic(Code/ABS)/saved_models/`
 
 ## BM25 Baseline Results on Evaluation Dataset
 
-1. process evaluaton data for BM25 baseline
+1. process evaluation data for BM25 baseline
 
 ```bash
-./python/model_run.sh preprocess_bm25_dabaseline $project
+./python/model_run.sh preprocess_bm25_baseline apache_commons-validator
 ```
+
+The processed data will be written to `evaldata/mutated-eval-data/f"{project}-ag-preprocessed.json"
 
 2. Run BM25 on the evaluation data
 
 ```bash
-./python/model_run.sh run_bm25_baseline $project
+./python/model_run.sh run_bm25_baseline apache_commons-validator
 ```
+
+The results will be written to `data/model-data/rank-model/$project/BM25Baseline/`
 
 ## ML Models Evaluation
 
-1. Run evaluation
+Run evaluation
 
 ```bash
-./python/model_run.sh test_rank_ekstazi_basic_model $project
-./python/model_run.sh test_rank_ekstazi_code_model $project
-./python/model_run.sh test_rank_ekstazi_abs_model $project
+./python/model_run.sh test_rank_ekstazi_basic_model apache_commons-validator
+./python/model_run.sh test_rank_ekstazi_code_model apache_commons-validator
+./python/model_run.sh test_rank_ekstazi_abs_model apache_commons-validator
 ```
 
 The eval results will be written to `data/model-data/rank-model/$project/Ekstazi-Basic(Code,ABS)/results`

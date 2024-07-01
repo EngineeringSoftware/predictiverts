@@ -71,7 +71,9 @@ def parse_file(SHA: str, filepath: str):
                         counter[i.value] += 1
 
     except Exception as e:
-        print(f"{SHA}, {filepath}, {e}")
+        pass
+        # filepath does not exist in the SHA
+        #print(f"{SHA}, {filepath}, {e}")
     return reduce((lambda x, key: (key + " ") * counter[key] + x), counter, "")
 
 
@@ -99,7 +101,8 @@ def pre_proecessing_for_each_sha(project, eval_data_item, subset="All"):
         for test in total_test_list:
             filepath = BashUtils.run(f"find . -name {test}.java").stdout
             if filepath == "":
-                print(test, "filepath is empty")
+                # print(f"{test}.java does not exist")
+                continue
             if len(filepath.split("\n")) > 1:
                 filepath = filepath.split("\n")[0]
             test_content[test] = parse_file(SHA, filepath)

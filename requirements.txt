@@ -11,3 +11,4 @@ seutil==0.5.1
 tokenizers==0.10.2
 torch==1.7.1
 torchvision==0.8.2
+scikit-learn==1.0.2
