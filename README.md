@@ -30,9 +30,19 @@ mkdir _downloads/
 ./python/run.sh downloads_repos
 ```
 
-You will see 10 projects used in our paper in `_downloads`
+You will see 10 projects used in our paper downloaded to `_downloads` and the corresponding results directories in `_results`.
 
-2. Modifying the `pom.xml` file of the `$project` by inserting the following plugin to the `pom.xml`.
+2. Enter the project's directory. Make sure to checkout to the correct SHA of the $project and the tests can be run without errors.
+   We use 'apache_commons-validator' for demonstration.
+
+```bash
+cd _downloads/apache_commons-validator
+git checkout 97bb5737
+mvn compile
+mvn test
+```
+
+3. Modifying the `pom.xml` file of the `$project` by inserting the following plugin to the `pom.xml`.
 
 ```xml
 <plugin>
@@ -48,15 +58,7 @@ You will see 10 projects used in our paper in `_downloads`
 </plugin>
 ```
 
-3. Make sure to checkout to the correct SHA of the $project and the tests can be run without errors. We use 'apache_commons-validator' for demonstration.
-
-```bash
-cd _downloads/apache_commons-validator
-mvn compile
-mvn test
-```
-
-3. Run pit and get a report in xml format `mutations.xml`
+4. Run pit and get a report in xml format `mutations.xml`
 
 ```bash
 mvn org.pitest:pitest-maven:mutationCoverage
@@ -71,7 +73,7 @@ mkdir _results/apache_commons-validtor -p
 cp _downloads/apache_commons-validator/target/pit-reports/*/mutations.xml _results/apache_commons-validator/
 ```
 
-4. Parse the pit report and the source code in the project to collect the pit-generated mutants.
+5. Parse the pit report and the source code in the project to collect the pit-generated mutants.
 
 ```bash
 ./python/run.sh get_mutants apache_commons-validator
@@ -80,7 +82,7 @@ cp _downloads/apache_commons-validator/target/pit-reports/*/mutations.xml _resul
 
 If the script runs successfully, you will see `mutant-data.json` and `method-data.json` in the `_results/$project/collector` directory.
 
-5. We provide positive and negative labels to each mutant-test pair. For 'Ekstazi-\*' models, we label the mutant-test pairs based on if the RTS tool (Ekstazi) will select the test or not.
+6. We provide positive and negative labels to each mutant-test pair. For 'Ekstazi-\*' models, we label the mutant-test pairs based on if the RTS tool (Ekstazi) will select the test or not.
 
 - In order to run Ekstazi, copy the `tools/ekstazi-extesnsion-1.0-SNAPSHOT.jar` to `${MAVEN_HOME}/lib/ext/`. Please refer to [document](tools/xts-extension/README.md) for detailed instructions.
 - Note: We use java 8 when running Ekstazi
@@ -92,7 +94,7 @@ If the script runs successfully, you will see `mutant-data.json` and `method-dat
 
 If the script runs successfully, you will see `mutant-data-rts-tool.json` file in `_results/$project/collector`. This file contains the tests selected by Ekstazi.
 
-6. Create training and validation dataset
+7. Create training and validation dataset
 
 - Dataset labeled by Ekstazi
 
