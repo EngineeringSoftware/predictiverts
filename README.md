@@ -206,15 +206,13 @@ Run evaluation:
 ./python/model_run.sh test_rank_ekstazi_abs_model apache_commons-validator
 ```
 
-The eval results metrics file will be written to
-`results/modelResults/$project/Ekstazi-Basic(Code,ABS)/`
+The eval results metrics will be written to
+`results/modelResults/$project/Ekstazi-Basic(Code,ABS)/best-safe-selection-rate.json`
 Same for 'Fail-\*' models.
 
-### Numbers in the paper
+The numbers reported in the Table 4 ('best safe selection rate of models that select from subset of Ekstazi') correspond to the value of 'Ekstazi-subset-best-safe-selection-rate' in the file 'best-safe-selection-rate.json'.
 
-1. The numbers reported in the Table 4: 'best safe selection rate of models that select from subset of Ekstazi' correspond to the 'Ekstazi-subset-best-safe-selection-rate' in the file 'best-safe-selection-rate.json'.
-
-2. The numbers reported in the Table 5: 'best safe selection rate of models that select from subset of STARTS' correspond to the 'STARTS-subset-best-safe-selection-rate' in the file 'best-safe-selection-rate.json'.
+The numbers reported in the Table 5 ('best safe selection rate of models that select from subset of STARTS') correspond to the value of 'STARTS-subset-best-safe-selection-rate' in the file 'best-safe-selection-rate.json'.
 
 ## Research
 
