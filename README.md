@@ -1,6 +1,6 @@
 # predictiverts
 
-ML-based Regression test selection(RTS) models based on mutation analysis and analysis-based RTS.
+ML-based Regression test selection(RTS) models based on mutation analysis and analysis-based RTS. [Paper link](https://dl.acm.org/doi/10.1145/3524481.3527230)
 
 ## Installation
 
@@ -211,6 +211,7 @@ The eval results metrics file will be written to
 Same for 'Fail-\*' models.
 
 ### Numbers in the paper
+
 1. The numbers reported in the Table 4: 'best safe selection rate of models that select from subset of Ekstazi' correspond to the 'Ekstazi-subset-best-safe-selection-rate' in the file 'best-safe-selection-rate.json'.
 
 2. The numbers reported in the Table 5: 'best safe selection rate of models that select from subset of STARTS' correspond to the 'STARTS-subset-best-safe-selection-rate' in the file 'best-safe-selection-rate.json'.
