@@ -191,10 +191,15 @@ The processed data will be written to `evaldata/mutated-eval-data/f"{project}-ag
 
 ```bash
 ./python/model_run.sh run_bm25_baseline apache_commons-validator
+./python/model_run.sh analyze_BM25_model apache_commons-validator
 ```
 
 The results will be written to
-`data/model-data/rank-model/$project/BM25Baseline`.
+`results/modelResults/$project/BM25Baseline/best-safe-selection-rate.json`
+
+The numbers (Baseline BM25) reported in the Table 4 ('best safe selection rate of models that select from subset of Ekstazi') correspond to the value of 'Ekstazi-subset-best-safe-selection-rate' in the file 'best-safe-selection-rate.json'.
+
+The numbers (Baseline BM25) reported in the Table 5 ('best safe selection rate of models that select from subset of STARTS') correspond to the value of 'STARTS-subset-best-safe-selection-rate' in the file 'best-safe-selection-rate.json'.
 
 ## ML Models Evaluation
 
