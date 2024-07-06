@@ -40,8 +40,8 @@ You will see 10 projects used in our paper downloaded to `_downloads`
 and the corresponding results directories in `_results`.
 
 2. Enter the project's directory. Make sure to checkout to the correct
-SHA of the $project and the tests can be run without errors.  We use
-'apache_commons-validator' for demonstration.
+   SHA of the $project and the tests can be run without errors. We use
+   'apache_commons-validator' for demonstration.
 
 ```bash
 cd _downloads/apache_commons-validator
@@ -51,7 +51,7 @@ mvn test
 ```
 
 3. Modifying the `pom.xml` file of the `$project` by inserting the
-following plugin to the `pom.xml`.
+   following plugin to the `pom.xml`.
 
 ```xml
 <plugin>
@@ -83,7 +83,7 @@ cp _downloads/apache_commons-validator/target/pit-reports/*/mutations.xml _resul
 ```
 
 5. Parse the PIT report and the project's source code to collect the
-pit-generated mutants.
+   pit-generated mutants.
 
 ```bash
 ./python/run.sh get_mutants apache_commons-validator
@@ -94,8 +94,8 @@ If the script runs successfully, you will see `mutant-data.json` and
 `method-data.json` in the `_results/$project/collector` directory.
 
 6. We provide positive and negative labels to each mutant-test
-pair. For 'Ekstazi-\*' models, we label the mutant-test pairs based on
-RTS results, i.e., if the RTS tool (Ekstazi) select the test or not.
+   pair. For 'Ekstazi-\*' models, we label the mutant-test pairs based on
+   RTS results, i.e., if the RTS tool (Ekstazi) select the test or not.
 
 - In order to run Ekstazi, copy the `tools/ekstazi-extesnsion-1.0-SNAPSHOT.jar` to `${MAVEN_HOME}/lib/ext/` (i.e., `MAVEN_HOME` if not set is the maven installation directory). Please refer to [document](tools/xts-extension/README.md) for detailed instructions.
 
@@ -206,9 +206,14 @@ Run evaluation:
 ./python/model_run.sh test_rank_ekstazi_abs_model apache_commons-validator
 ```
 
-The eval results will be written to
-`data/model-data/rank-model/$project/Ekstazi-Basic(Code,ABS)/results`
+The eval results metrics file will be written to
+`results/modelResults/$project/Ekstazi-Basic(Code,ABS)/`
 Same for 'Fail-\*' models.
+
+### Numbers in the paper
+1. The numbers reported in the Table 4: 'best safe selection rate of models that select from subset of Ekstazi' correspond to the 'Ekstazi-subset-best-safe-selection-rate' in the file 'best-safe-selection-rate.json'.
+
+2. The numbers reported in the Table 5: 'best safe selection rate of models that select from subset of STARTS' correspond to the 'STARTS-subset-best-safe-selection-rate' in the file 'best-safe-selection-rate.json'.
 
 ## Research
 
