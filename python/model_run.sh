@@ -3,7 +3,7 @@
 # This script documents the exact procedures we use to process data
 # for models, train the models, test the models and analyze the models.
 
-_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 readonly DATASET_PATH=${_DIR}/../data
 readonly RESULTS_PATH=${_DIR}/../_results
@@ -11,17 +11,17 @@ readonly RESULTS_PATH=${_DIR}/../_results
 readonly defects4j_lang_id=(31 32 33 34 35)
 
 readonly PROJECTS=(
-         "Bukkit_Bukkit"
-         "asterisk-java_asterisk-java"
-         "zeroturnaround_zt-exec"
-         "apache_commons-validator"
-         "apache_commons-net"
-         "apache_commons-csv"
-         "frizbog_gedcom4j"
-         "mikera_vectorz"
-         "apache_commons-lang"
-     "apache_commons-configuration"
-#    "apache_Lang-36"
+        "Bukkit_Bukkit"
+        "asterisk-java_asterisk-java"
+        "zeroturnaround_zt-exec"
+        "apache_commons-validator"
+        "apache_commons-net"
+        "apache_commons-csv"
+        "frizbog_gedcom4j"
+        "mikera_vectorz"
+        "apache_commons-lang"
+        "apache_commons-configuration"
+        #    "apache_Lang-36"
 )
 
 function train_all_models_in_parallel() {
@@ -76,7 +76,7 @@ function analyze_combo_models_all() {
         done
 }
 
-function analyze_ealrts_models(){
+function analyze_ealrts_models() {
         for proj in "${PROJECTS[@]}"; do
                 analyze_EALRTS_randomforest_model $proj
                 analyze_EALRTS_xgboost_model $proj
@@ -85,8 +85,8 @@ function analyze_ealrts_models(){
 
 ## Eval on real failures tests
 function eval_models_on_real_failed_tests() {
-       python -m pts.main eval_real_failed_tests --rule="True"
-       python -m pts.main eval_real_failed_tests
+        python -m pts.main eval_real_failed_tests --rule="True"
+        python -m pts.main eval_real_failed_tests
 }
 
 ###############
@@ -94,15 +94,15 @@ function eval_models_on_real_failed_tests() {
 ################
 function run_combo_models_all() {
         for proj in "${PROJECTS[@]}"; do
-                  run_ensemble_ekstazi_basic_bm25 $proj
-                  run_ensemble_bm25_fail_basic $proj
+                run_ensemble_ekstazi_basic_bm25 $proj
+                run_ensemble_bm25_fail_basic $proj
         done
 }
 
 ###############
 # Run all the baseline models
 ################
-function run_bm25_baseline_all(){
+function run_bm25_baseline_all() {
         for proj in "${PROJECTS[@]}"; do
                 preprocess_bm25_baseline $proj
                 run_bm25_baseline $proj
@@ -121,7 +121,7 @@ function run_bm25_no_context_baseline_all() {
         done
 }
 
-function run_test_one_by_one(){
+function run_test_one_by_one() {
         python -m pts.main run_test_one_by_one --projects="${PROJECTS[*]}"
 }
 
@@ -145,32 +145,28 @@ function process_test_data() {
 }
 
 function make_eval_data_defects4j_lang() {
-         for pid in ${defects4j_lang_id[@]}; do
-             python -m pts.main collect_eval_data_defect4j --project=apache_Lang-${pid}
-	 done
+        for pid in ${defects4j_lang_id[@]}; do
+                python -m pts.main collect_eval_data_defect4j --project=apache_Lang-${pid}
+        done
 }
 
 #######################################
 # Data processor for rank model
 #######################################
 function process_train_data_rank_model() {
-        python -m pts.main process_data --which=Rank\
-               --label_type=Ekstazi --project="$1" --type=train
+        python -m pts.main process_data --which=Rank --label_type=Ekstazi --project="$1" --type=train
 }
 
 function process_train_data_rank_model_fail() {
-        python -m pts.main process_data --which=Rank\
-               --label_type=Fail\
-               --project="$1" --type=train
+        python -m pts.main process_data --which=Rank --label_type=Fail --project="$1" --type=train
 }
 
 function process_test_data_rank_model() {
-        python -m pts.main process_data --which=Rank\
-               --project="$1" --type=test
+        python -m pts.main process_data --which=Rank --project="$1" --type=test
 }
 
 # caller function for rank_model_bm25
-function process_train_data_rank_model_bm25_fail(){
+function process_train_data_rank_model_bm25_fail() {
         python -m pts.main process_data --which=Rank-bm25 --project="$1" --label_type=Fail --type=train
 }
 
@@ -178,13 +174,12 @@ function process_test_data_rank_model_bm25() {
         python -m pts.main process_data --which=Rank-bm25 --project="$1" --type=test
 }
 
-
 ########################
 # Data Processor for the EALRTS
 ########################
 function process_mutated_eval_data_ealrts_all() {
         for proj in "${PROJECTS[@]}"; do
-            process_mutated_eval_data_ealrts $proj
+                process_mutated_eval_data_ealrts $proj
         done
 }
 
@@ -197,13 +192,13 @@ function process_mutated_eval_data_ealrts() {
 ############################
 function run_ealrts_baseline_all() {
         for proj in "${PROJECTS[@]}"; do
-            run_ealrts_baseline $proj
+                run_ealrts_baseline $proj
         done
 }
 
 function run_ealrts_baseline() {
-    python -m pts.main run_ealrts_baseline --project="$1" --model="randomforest"
-    python -m pts.main run_ealrts_baseline --project="$1" --model="xgboost"
+        python -m pts.main run_ealrts_baseline --project="$1" --model="randomforest"
+        python -m pts.main run_ealrts_baseline --project="$1" --model="xgboost"
 }
 
 #####################################
@@ -231,7 +226,7 @@ function run_linenumber_baseline_with_all_covered_lines() {
 ###################################
 # Combine/ensemble models
 ###################################
-function run_ensemble_bm25_fail_code(){
+function run_ensemble_bm25_fail_code() {
         python -m pts.main run_ensemble_models --project="$1" --models=Fail-Code --models=BM25Baseline
 }
 
@@ -295,8 +290,8 @@ function train_rank_starts_basic_model() {
 }
 
 function train_rank_starts_code_model() {
-        python -m pts.main run_rank_model --project="$1" --config="rank-code.yaml"\
-               --which=STARTS-Code
+        python -m pts.main run_rank_model --project="$1" --config="rank-code.yaml" \
+                --which=STARTS-Code
 }
 
 function train_rank_starts_method_code_model() {
@@ -304,8 +299,8 @@ function train_rank_starts_method_code_model() {
 }
 
 function train_rank_starts_abs_model() {
-        python -m pts.main run_rank_model --project="$1" --config="rank-abs.yaml"\
-               --which=STARTS-ABS
+        python -m pts.main run_rank_model --project="$1" --config="rank-abs.yaml" \
+                --which=STARTS-ABS
 }
 
 function train_rank_ekstazi_basic_model() {
@@ -321,18 +316,18 @@ function train_rank_ekstazi_method_code_model() {
 }
 
 function train_rank_ekstazi_abs_model() {
-        python -m pts.main run_rank_model --project="$1" --config="rank-abs.yaml"\
-               --which=Ekstazi-ABS
+        python -m pts.main run_rank_model --project="$1" --config="rank-abs.yaml" \
+                --which=Ekstazi-ABS
 }
 
 function train_rank_fail_basic_model() {
-        python -m pts.main run_rank_model --project="$1" --config="rank-basic.yaml"\
-               --which=Fail-Basic
+        python -m pts.main run_rank_model --project="$1" --config="rank-basic.yaml" \
+                --which=Fail-Basic
 }
 
 function train_rank_fail_code_model() {
-        python -m pts.main run_rank_model --project="$1" --config="rank-code.yaml"\
-               --which=Fail-Code
+        python -m pts.main run_rank_model --project="$1" --config="rank-code.yaml" \
+                --which=Fail-Code
 }
 
 function train_rank_fail_method_code_model() {
@@ -340,8 +335,8 @@ function train_rank_fail_method_code_model() {
 }
 
 function train_rank_fail_abs_model() {
-        python -m pts.main run_rank_model --project="$1" --config="rank-abs.yaml"\
-               --which=Fail-ABS
+        python -m pts.main run_rank_model --project="$1" --config="rank-abs.yaml" \
+                --which=Fail-ABS
 }
 
 function run_boosting_rank_models() {
@@ -380,10 +375,12 @@ function test_rank_triplet_model() {
 
 function test_rank_ekstazi_basic_model() {
         python -m pts.main run_rank_model --project="$1" --which=Ekstazi-Basic --config="rank-basic.yaml" --mode=test
+        python -m pts.main run_rank_model --project="$1" --which=Ekstazi-Basic --config="rank-basic.yaml" --mode=analysis
 }
 
 function test_rank_ekstazi_code_model() {
         python -m pts.main run_rank_model --project="$1" --which=Ekstazi-Code --config="rank-code.yaml" --mode=test
+        python -m pts.main run_rank_model --project="$1" --which=Ekstazi-Code --config="rank-code.yaml" --mode=analysis
 }
 
 function test_rank_starts_method_code_model() {
@@ -392,18 +389,22 @@ function test_rank_starts_method_code_model() {
 
 function test_rank_ekstazi_abs_model() {
         python -m pts.main run_rank_model --project="$1" --which=Ekstazi-ABS --config="rank-abs.yaml" --mode=test
+        python -m pts.main run_rank_model --project="$1" --which=Ekstazi-ABS --config="rank-abs.yaml" --mode=analysis
 }
 
 function test_rank_fail_basic_model() {
         python -m pts.main run_rank_model --project="$1" --which=Fail-Basic --config="rank-basic.yaml" --mode=test
+        python -m pts.main run_rank_model --project="$1" --which=Fail-Basic --config="rank-basic.yaml" --mode=analysis
 }
 
 function test_rank_fail_code_model() {
         python -m pts.main run_rank_model --project="$1" --which=Fail-Code --config="rank-code.yaml" --mode=test
+        python -m pts.main run_rank_model --project="$1" --which=Fail-Code --config="rank-code.yaml" --mode=analysis
 }
 
 function test_rank_fail_abs_model() {
         python -m pts.main run_rank_model --project="$1" --which=Fail-ABS --config="rank-abs.yaml" --mode=test
+        python -m pts.main run_rank_model --project="$1" --which=Fail-ABS --config="rank-abs.yaml" --mode=analysis
 }
 
 function test_rank_fail_method_abs_model() {
@@ -460,7 +461,7 @@ function analyze_triplet_model() {
 
 function analyze_ensemble_model() {
         # python -m pts.main run_rank_model --project="$1" --which=Ekstazi-Basic-BM25Baseline --config="triplet.yaml" --mode=analysis
-    # python -m pts.main run_rank_model --project="$1" --which=Fail-Code-BM25Baseline --config="rank-abs.yaml" --mode=analysis
+        # python -m pts.main run_rank_model --project="$1" --which=Fail-Code-BM25Baseline --config="rank-abs.yaml" --mode=analysis
         python -m pts.main run_rank_model --project="$1" --which=Fail-Basic-BM25Baseline --config="rank-abs.yaml" --mode=analysis
 }
 
@@ -468,27 +469,27 @@ function analyze_boosting_model() {
         python -m pts.main run_rank_model --project="$1" --which=boosting --config="triplet.yaml" --mode=analysis
 }
 
-function analyze_TFIDF_model(){
+function analyze_TFIDF_model() {
         python -m pts.main run_rank_model --project="$1" --which=TFIDFBaseline --config="rank-basic.yaml" --mode=analysis
 }
 
-function analyze_BM25_model(){
+function analyze_BM25_model() {
         python -m pts.main run_rank_model --project="$1" --which=BM25Baseline --config="rank-basic.yaml" --mode=analysis
 }
 
-function analyze_EALRTS_randomforest_model(){
+function analyze_EALRTS_randomforest_model() {
         python -m pts.main run_rank_model --project="$1" --which=randomforest --config="rank-basic.yaml" --mode=analysis
 }
 
-function analyze_EALRTS_xgboost_model(){
+function analyze_EALRTS_xgboost_model() {
         python -m pts.main run_rank_model --project="$1" --which=xgboost --config="rank-basic.yaml" --mode=analysis
 }
 
-function analyze_BM25_no_context_model(){
+function analyze_BM25_no_context_model() {
         python -m pts.main run_rank_model --project="$1" --which=BM25NoContext --config="rank-basic.yaml" --mode=analysis
 }
 
-function analyze_TFIDF_content_model(){
+function analyze_TFIDF_content_model() {
         python -m pts.main run_rank_model --project="$1" --which=TFIDFContent --config="rank-basic.yaml" --mode=analysis
 }
 
@@ -509,10 +510,12 @@ function analyze_rank_fail_mabs_models() {
 # This script can be executed as ./run.sh the_function_to_run
 
 function main() {
-        local action=${1:?Need Argument}; shift
+        local action=${1:?Need Argument}
+        shift
 
-        ( cd ${_DIR}
-          $action "$@"
+        (
+                cd ${_DIR}
+                $action "$@"
         )
 }
 
