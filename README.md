@@ -1,15 +1,17 @@
 # predictiverts
 
-ML-based Regression test selection(RTS) models based on mutation analysis and analysis-based RTS. [Paper link](https://dl.acm.org/doi/10.1145/3524481.3527230)
+ML-based Regression Test Selection (RTS) models based on mutation
+analysis and analysis-based RTS. [Link to the paper that describes the
+technique](https://dl.acm.org/doi/10.1145/3524481.3527230).
 
 ## Installation
 
-It is recommended to use [conda](https://docs.conda.io/en/latest/) or
+It is recommended to use [conda](https://docs.conda.io/en/latest) or
 [virtual
-environments](https://realpython.com/python-virtual-environments-a-primer/)
+environments](https://realpython.com/python-virtual-environments-a-primer)
 to manage Python dependencies.
 
-For conda user, run:
+For conda users, run:
 
 ```bash
 conda create -n prts python=3.7
@@ -22,14 +24,17 @@ To run the experiments, you need Java 8 and Maven.
 
 ## Training Data Collection
 
-We use [PIT](https://pitest.org/) to get mutants for training data. To
+We use [PIT](https://pitest.org) to get mutants for training data. To
 generate and collect training data from an open-source project:
 
-1. Create download directory `_downloads` and clone the repository `$project` to this directory.
+1. Create download directory `_downloads` and clone the repository
+`${project}` to this directory.
 
-The project list and SHAs we used are documented
+The list of projects and SHAs we used are documented
 [here](https://github.com/EngineeringSoftware/predictiverts/blob/43c65cc9bb2b7e1379e101457a734b7b2e01ad25/python/pts/main.py#L34).
-To download all the projects:
+
+To download all the projects with a single command, execute the
+following:
 
 ```bash
 mkdir -p _downloads
@@ -37,20 +42,21 @@ mkdir -p _downloads
 ```
 
 You will see 10 projects used in our paper downloaded to `_downloads`
-and the corresponding results directories in `_results`.
+and the corresponding results directories in `_results`; the
+`_results` directory will be empty at this point.
 
 2. Enter the project's directory. Make sure to checkout to the correct
    SHA of the $project and the tests can be run without errors. We use
-   'apache_commons-validator' for demonstration.
+   'apache_commons-validator' for demonstration in the rest of this
+   document.
 
 ```bash
 cd _downloads/apache_commons-validator
 git checkout 97bb5737
-mvn compile
 mvn test
 ```
 
-3. Modifying the `pom.xml` file of the `$project` by inserting the
+3. Modifying the `pom.xml` file of the `${project}` by inserting the
    following plugin to the `pom.xml`.
 
 ```xml
@@ -91,13 +97,13 @@ cp _downloads/apache_commons-validator/target/pit-reports/*/mutations.xml _resul
 ```
 
 If the script runs successfully, you will see `mutant-data.json` and
-`method-data.json` in the `_results/$project/collector` directory.
+`method-data.json` in the `_results/${project}/collector` directory.
 
 6. We provide positive and negative labels to each mutant-test
    pair. For 'Ekstazi-\*' models, we label the mutant-test pairs based on
    RTS results, i.e., if the RTS tool (Ekstazi) select the test or not.
 
-- In order to run Ekstazi, copy the `tools/ekstazi-extesnsion-1.0-SNAPSHOT.jar` to `${MAVEN_HOME}/lib/ext/` (i.e., `MAVEN_HOME` if not set is the maven installation directory). Please refer to [document](tools/xts-extension/README.md) for detailed instructions.
+- In order to run Ekstazi, copy the `tools/ekstazi-extension-1.0-SNAPSHOT.jar` to `${MAVEN_HOME}/lib/ext/` (i.e., if not set, `MAVEN_HOME` is the maven installation directory). Please refer to [document](tools/xts-extension/README.md) for detailed instructions.
 
 ```bash
 # Collect labels from Ekstazi results
@@ -106,7 +112,7 @@ If the script runs successfully, you will see `mutant-data.json` and
 
 If the script runs successfully, you will see
 `mutant-data-rts-tool.json` file in
-`_results/$project/collector`. This file contains the tests selected
+`_results/${project}/collector`. This file contains the tests selected
 by Ekstazi.
 
 7. Create training and validation dataset
@@ -129,7 +135,8 @@ The data files will be written to `data/model-data/rank-model`.
 
 [sec-downloads]: #data-downloads
 
-All our data is hosted on UTBox via [a shared folder](https://utexas.box.com/s/p0uvysksey7iz0l3fxxqo3k6p6xt78ji).
+All our data is hosted on UTBox via [a shared
+folder](https://utexas.box.com/s/p0uvysksey7iz0l3fxxqo3k6p6xt78ji).
 
 1. Download eval data and put in the `evaldata` directory
 
@@ -145,7 +152,7 @@ unzip eval-data.zip -d evaldata
 ```
 
 The processed evaluation dataset will be store at
-`data/model-data/rank-model/$project/test.json`.
+`data/model-data/rank-model/${project}/test.json`.
 
 ## Model Training
 
@@ -161,7 +168,7 @@ The processed evaluation dataset will be store at
 ```
 
 The model checkpoints will be saved to
-`data/model-data/rank-model/$project/Ekstazi-Basic(Code/ABS)/saved_models`.
+`data/model-data/rank-model/${project}/Ekstazi-{Basic,Code,ABS}/saved_models`.
 
 2. Train model with data labeled by tests results
 
@@ -175,7 +182,7 @@ The model checkpoints will be saved to
 ```
 
 The model checkpoints will be saved to
-`data/model-data/rank-model/$project/Fail-Basic(Code/ABS)/saved_models`.
+`data/model-data/rank-model/${project}/Fail-{Basic,Code,ABS}/saved_models`.
 
 ## BM25 Baseline Results on Evaluation Dataset
 
@@ -185,7 +192,8 @@ The model checkpoints will be saved to
 ./python/model_run.sh preprocess_bm25_baseline apache_commons-validator
 ```
 
-The processed data will be written to `evaldata/mutated-eval-data/f"{project}-ag-preprocessed.json"
+The processed data will be written to
+`evaldata/mutated-eval-data/f"{project}-ag-preprocessed.json"
 
 2. Run BM25 on the evaluation data
 
@@ -195,11 +203,17 @@ The processed data will be written to `evaldata/mutated-eval-data/f"{project}-ag
 ```
 
 The results will be written to
-`results/modelResults/$project/BM25Baseline/best-safe-selection-rate.json`
+`results/modelResults/${project}/BM25Baseline/best-safe-selection-rate.json`
 
-The numbers (Baseline BM25) reported in the Table 4 ('best safe selection rate of models that select from subset of Ekstazi') correspond to the value of 'Ekstazi-subset-best-safe-selection-rate' in the file 'best-safe-selection-rate.json'.
+The numbers (Baseline BM25) reported in the Table 4 ('best safe
+selection rate of models that select from subset of Ekstazi')
+correspond to the value of 'Ekstazi-subset-best-safe-selection-rate'
+in the file 'best-safe-selection-rate.json'.
 
-The numbers (Baseline BM25) reported in the Table 5 ('best safe selection rate of models that select from subset of STARTS') correspond to the value of 'STARTS-subset-best-safe-selection-rate' in the file 'best-safe-selection-rate.json'.
+The numbers (Baseline BM25) reported in the Table 5 ('best safe
+selection rate of models that select from subset of STARTS')
+correspond to the value of 'STARTS-subset-best-safe-selection-rate' in
+the file 'best-safe-selection-rate.json'.
 
 ## ML Models Evaluation
 
@@ -212,17 +226,22 @@ Run evaluation:
 ```
 
 The eval results metrics will be written to
-`results/modelResults/$project/Ekstazi-Basic(Code,ABS)/best-safe-selection-rate.json`
+`results/modelResults/${project}/Ekstazi-{Basic,Code,ABS}/best-safe-selection-rate.json`
 Same for 'Fail-\*' models.
 
-The numbers reported in the Table 4 ('best safe selection rate of models that select from subset of Ekstazi') correspond to the value of 'Ekstazi-subset-best-safe-selection-rate' in the file 'best-safe-selection-rate.json'.
+The numbers reported in the Table 4 ('best safe selection rate of
+models that select from subset of Ekstazi') correspond to the value of
+'Ekstazi-subset-best-safe-selection-rate' in the file
+'best-safe-selection-rate.json'.
 
-The numbers reported in the Table 5 ('best safe selection rate of models that select from subset of STARTS') correspond to the value of 'STARTS-subset-best-safe-selection-rate' in the file 'best-safe-selection-rate.json'.
+The numbers reported in the Table 5 ('best safe selection rate of
+models that select from subset of STARTS') correspond to the value of
+'STARTS-subset-best-safe-selection-rate' in the file
+'best-safe-selection-rate.json'.
 
 ## Research
 
-If you have used our data and code in a research project, please cite
-the following paper:
+If you have used our data or code in a research project, please cite:
 
 ```bibtex
 @inproceedings{ZhangETAL22Comparing,
